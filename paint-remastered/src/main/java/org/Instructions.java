@@ -4,6 +4,7 @@ import org.academiadecodigo.simplegraphics.graphics.Color;
 import org.academiadecodigo.simplegraphics.graphics.Line;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 import org.academiadecodigo.simplegraphics.graphics.Text;
+import org.academiadecodigo.simplegraphics.pictures.Picture;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +18,10 @@ public class Instructions {
 
 
     public void buildInstructions() {
-        Rectangle rectangle = new Rectangle(initPositionX, Field.PADDLE, width, height);
-        rectangle.draw();
+        /*Rectangle rectangle = new Rectangle(initPositionX, Field.PADDLE, width, height);
+        rectangle.draw();*/
+        Picture picture = new Picture(initPositionX -8, Field.PADDLE, "Design sem nome.png");
+        picture.draw();
 
         Text intro = new Text(initPositionX + 20, Field.PADDLE, "Instructions");
         intro.grow(100, 30);
@@ -63,7 +66,7 @@ public class Instructions {
 
     }
 
-    public void colorInstructions(){
+    public void colorInstructions() {
         int y = 550;
         int x = 1030;
         List<String> list = new ArrayList<>();
@@ -72,7 +75,7 @@ public class Instructions {
         list.add("the block, press space");
         list.add("to paint and then: ");
 
-        for(String w : list){
+        for (String w : list) {
             Text text = new Text(x, y, w);
             text.grow(91, 10);
             text.translate(x - text.getX(), y - text.getY());
@@ -86,10 +89,10 @@ public class Instructions {
         listOfColors.add("E");
         listOfColors.add("R");
         listOfColors.add("T");
-        y +=50;
+        y += 50;
         int savedY = y;
 
-        for(String w : listOfColors){
+        for (String w : listOfColors) {
             Text text = new Text(x, y, w);
             text.grow(10, 10);
             text.translate(x - text.getX(), y - text.getY());
@@ -105,19 +108,12 @@ public class Instructions {
         listColors.add(Color.RED);
         listColors.add(Color.MAGENTA);
 
-        for (Color color : listColors){
-            Rectangle rectangle = new Rectangle(x + 50, savedY +8, 20,20);
+        for (Color color : listColors) {
+            Rectangle rectangle = new Rectangle(x + 50, savedY + 8, 20, 20);
             rectangle.setColor(color);
             rectangle.fill();
-            savedY+= 60;
+            savedY += 60;
         }
-
-
-
-
-
-
-
 
 
     }

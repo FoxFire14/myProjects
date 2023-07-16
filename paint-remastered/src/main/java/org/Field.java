@@ -1,5 +1,6 @@
 package org;
 
+import org.academiadecodigo.simplegraphics.graphics.Color;
 import org.academiadecodigo.simplegraphics.graphics.Line;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 
@@ -29,5 +30,13 @@ public class Field {
             lineX.draw();
             lineY.draw();
         }
+        border();
     }
+  public void border(){
+
+        Rectangle rectangle1 = new Rectangle(PADDLE, height + 11, width + 302,50);
+        rectangle1.setColor(Color.WHITE);
+
+        rectangle1.fill();
+  }
 }

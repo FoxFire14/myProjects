@@ -5,15 +5,17 @@ public class Game {
     private Cursor cursor;
     private Field field;
 
-    public Game (PositionTint positionTint, Cursor cursor, Field field){
+    public Game(PositionTint positionTint, Cursor cursor, Field field) {
         this.cursor = cursor;
         this.positionTint = positionTint;
         this.field = field;
 
     }
 
-    public void init(){
+    public void init() {
+
         field.drawField();
+
         cursor.setupCursor();
     }
 }
