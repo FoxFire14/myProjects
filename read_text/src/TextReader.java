@@ -1,5 +1,7 @@
 import java.io.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -34,6 +36,7 @@ public class TextReader {
 
 
     public void countWords(String myText) {
+
         long counter = Stream.of(myText.split("\\s+|\\n"))
                 .count();
 
@@ -41,44 +44,36 @@ public class TextReader {
     }
 
     public void firstWordWithSize(String myText, int numbWords) {
+
         System.out.println(Stream.of(myText.split("\\s+|\\n"))
                 .filter(word -> word.length() == numbWords)
                 .findFirst());
     }
 
     public void findWordsWithSize(String myText, int numbWords) {
-       List<String> myList = Stream.of(myText.split("\\s+|\\n"))
+
+        List<String> myList = Stream.of(myText.split("\\s+|\\n"))
                 .filter(word -> word.length() == numbWords)
                 .collect(Collectors.toList());
-       Stream.of(myList)
-               .forEach(System.out::println);
+
+        Stream.of(myList)
+                .forEach(System.out::println);
     }
 
     public void matchingWords(String filePath, String filePath2) {
         String file = readFileToString(filePath);
         String file2 = readFileToString(filePath2);
 
+
         List<String> array = Stream.of(file.split("\\s+|\\n"))
                 .filter(file2::contains)
+                .distinct()
                 .collect(Collectors.toList());
 
-        synchronized (this) {
-            for (int i = 0; i < array.size(); i++) {
-                String myWord = array.get(i);
-                for (int j = 1; j < array.size(); j++) {
-
-                    String currentWord = array.get(j);
-                    if (myWord.equals(currentWord)) {
-                        array.remove(currentWord);
-                    }
-
-                }
-            }
+        Stream.of(array)
+                .forEach(System.out::println);
 
 
-            Stream.of(array)
-                    .forEach(System.out::println);
-        }
     }
 
 
@@ -88,9 +83,10 @@ public class TextReader {
         String myList = textReader.readFileToString("resources/text.txt");
 
         textReader.countWords(myList);
-        textReader.firstWordWithSize(myList, 6);
 
-        textReader.findWordsWithSize(myList,6);
+        textReader.firstWordWithSize(myList, 8);
+
+        textReader.findWordsWithSize(myList, 6);
 
         textReader.matchingWords("resources/text.txt", "resources/text2.txt");
 
