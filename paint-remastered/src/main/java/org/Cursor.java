@@ -24,7 +24,7 @@ public class Cursor implements KeyboardHandler {
     }
 
     public void setupCursor() {
-        rectangle = new Rectangle(Field.PADDLE +1, Field.PADDLE+1, Field.RECTANGLE_SIZE -1, Field.RECTANGLE_SIZE-1);
+        rectangle = new Rectangle(Field.PADDLE +1, Field.PADDLE+1, Field.RECTANGLE_SIZE -2, Field.RECTANGLE_SIZE-2);
         this.x = rectangle.getX();
         this.y = rectangle.getY();
 
