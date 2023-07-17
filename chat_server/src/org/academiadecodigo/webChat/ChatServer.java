@@ -13,10 +13,7 @@ public class ChatServer {
     private final int PORT = 8014;
     private ServerSocket serverSocket = null;
     private List<WorkerSlave> clientList = new CopyOnWriteArrayList<>();
-<<<<<<< HEAD:chat_server/src/org/academiadecodigo/webChat/ChatServer.java
 
-=======
->>>>>>> 403cbb99eb68c1689425b5ada442b27c1e00d14f:chat_server/src/org/academiadecodigo/flowribellas/WebServer.java
 
 
     public void listen() {
@@ -25,10 +22,7 @@ public class ChatServer {
         try {
             serverSocket = new ServerSocket(PORT);
             ExecutorService executorService = Executors.newCachedThreadPool();
-<<<<<<< HEAD:chat_server/src/org/academiadecodigo/webChat/ChatServer.java
-=======
 
->>>>>>> 403cbb99eb68c1689425b5ada442b27c1e00d14f:chat_server/src/org/academiadecodigo/flowribellas/WebServer.java
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
@@ -36,13 +30,11 @@ public class ChatServer {
                 WorkerSlave workerSlave = new WorkerSlave(clientSocket);
 
                 clientList.add(workerSlave);
-<<<<<<< HEAD:chat_server/src/org/academiadecodigo/webChat/ChatServer.java
+
 
                 //System.out.println(clientList.size());
 
 
-=======
->>>>>>> 403cbb99eb68c1689425b5ada442b27c1e00d14f:chat_server/src/org/academiadecodigo/flowribellas/WebServer.java
                 executorService.submit(workerSlave);
 
                 //System.out.println(clientList.size());
@@ -110,7 +102,7 @@ public class ChatServer {
         public void handleChatMessages() {
             String line;
             setupBuffer();
-<<<<<<< HEAD:chat_server/src/org/academiadecodigo/webChat/ChatServer.java
+
 
             try {
 
@@ -120,8 +112,6 @@ public class ChatServer {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-=======
->>>>>>> 403cbb99eb68c1689425b5ada442b27c1e00d14f:chat_server/src/org/academiadecodigo/flowribellas/WebServer.java
 
             try {
 
@@ -136,15 +126,13 @@ public class ChatServer {
 
                     synchronized (this) {
                         if (line.equals("/exit")) {
-<<<<<<< HEAD:chat_server/src/org/academiadecodigo/webChat/ChatServer.java
+
                             broadcastMessage( "\u001B[31mLeft the chat\u001B[0m", this);
                             sendMessage("\u001B[31mDisconnected\u001B[0m");
-                            removeClient(this);
-=======
+
                             broadcastMessage(name + " left the chat", this);
                             sendMessage("Disconnected");
                             //sendMessage("Press Enter 2x to leave");
->>>>>>> 403cbb99eb68c1689425b5ada442b27c1e00d14f:chat_server/src/org/academiadecodigo/flowribellas/WebServer.java
                             break;
                         }
                     }
@@ -165,12 +153,8 @@ public class ChatServer {
 
         @Override
         public void run() {
-<<<<<<< HEAD:chat_server/src/org/academiadecodigo/webChat/ChatServer.java
             handleChatMessages();
 
-=======
-            chatStart();
->>>>>>> 403cbb99eb68c1689425b5ada442b27c1e00d14f:chat_server/src/org/academiadecodigo/flowribellas/WebServer.java
         }
     }
 }
