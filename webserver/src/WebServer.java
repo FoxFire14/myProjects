@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.Executors;
 
 public class WebServer {
     private ServerSocket serverSocket;
@@ -32,8 +33,9 @@ public class WebServer {
     }
 
     public void dispatcher(){
-        Thread thread = new Thread(new Dispatcher(clientSocket));
-        thread.start();
+
+        Executors.defaultThreadFactory().newThread(new Dispatcher(clientSocket)).start();
+
     }
 
   /*  public Boolean isBound(){
