@@ -1,0 +1,13 @@
+org/Main.class
+org/strategyColors/BlackColorStrategy.class
+org/strategyColors/PinkColorStrategy.class
+org/strategyColors/ColorStrategy.class
+org/Instructions.class
+org/Game.class
+org/strategyColors/BlueColorStrategy.class
+org/Cursor.class
+org/Tint.class
+org/Field.class
+org/PositionTint.class
+org/strategyColors/RedColorStrategy.class
+org/strategyColors/GreenColorStrategy.class

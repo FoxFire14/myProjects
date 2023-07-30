@@ -17,8 +17,8 @@ public class Tint {
     private int x;
     private int y;
     private Color color = Color.BLACK;
-    private final int width = Field.RECTANGLE_SIZE - 1;
-    private final int height = Field.RECTANGLE_SIZE - 1;
+    private final int width = Field.RECTANGLE_SIZE - 2;
+    private final int height = Field.RECTANGLE_SIZE - 2;
 
 
 
