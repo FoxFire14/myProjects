@@ -8,33 +8,71 @@ let fieldDivision = fieldWidth / numberOfLines;
 const blockHeight = 40;
 const blockWidth = fieldDivision;
 let id = 1
+let speedBlock = 20;
 
-let blockA = {
-    id: id++,
-    position: {x: 0, y: 0},
-    color: "blue"
-};
 
-let blockB = {
-    id: id++,
-    position: {x: fieldDivision, y: 0},
-    color: "red"
-};
+class Block {
+    constructor(positonX, color) {
+        this._x = positonX;
+        this._y = -blockHeight;
+        this._color = color;
+    }
 
-let blockC = {
-    id: id++,
-    position: {x: fieldDivision * 2, y: 0},
-    color: "green"
-};
+    get x() {
+        return this._x;
+    }
 
-let blockD = {
-    id: id++,
-    position: {x: fieldDivision * 3, y: 0},
-    color: "orange"
-};
+    get y() {
+        return this._y;
+    }
 
-let blocksOnField = [blockA, blockB, blockC, blockD];
+    get color() {
+        return this._color;
+    }
 
+    set y(value) {
+        this._y = value;
+    }
+}
+
+
+class BlockA extends Block {
+    constructor () {
+        super(0, "blue");
+    }
+}
+
+class BlockB extends Block {
+    constructor () {
+        super(fieldDivision, "red");
+    }
+}
+
+class BlockC extends Block {
+    constructor () {
+        super(fieldDivision * 2, "green");
+    }
+}
+
+class BlockD extends Block {
+    constructor () {
+        super(fieldDivision * 3, "orange");
+    }
+}
+
+const myBlockA = new BlockA(); 
+
+let blocksOnField = [myBlockA, new BlockB(), new BlockC(), new BlockD()];
+
+
+function getRandomInt(min, max) {
+
+    const minCeiled = Math.ceil(min);
+    const maxFloored = Math.floor(max);
+
+    return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
+
+}
 
 function drawLines() {
     
@@ -57,34 +95,51 @@ function drawLines() {
     
 }
 
+function limitCheck (block, index) {
+    let value = null;
 
-function drawBlocks() {
+    if (block.y >= fieldHeight) {
+        value = blocksOnField.splice(index, 1);
+    }
+
+    return value === null;
+}
+
+
+function drawBlocks(block) {
+
+    ctx.fillStyle = block.color;
+    ctx.fillRect(block.x, block.y, blockWidth, blockHeight);
+    
+}
+
+
+function moveBlocks() {
 
     let block;
 
     for (let i = 0; i < blocksOnField.length; i++) {
         block = blocksOnField[i];
-    
-        ctx.fillStyle = block.color;
-        ctx.fillRect(block.position.x, block.position.y, blockWidth, blockHeight);
         
+        if (limitCheck(block, i)) {
+            
+            drawBlocks(block);
+            block.y += 1;
+
+        }
     } 
 }
 
-function moveBlocks() {
+function gameFlow() {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawLines();
-    drawBlocks();
-    blockA.position.y += 1;
-    console.log(blockA.position.y);
+    moveBlocks();
     
     //loopID = setTimeout(() => {
-    //    moveBlocks();
-    //}, 20);
+    //    gameFlow();
+    //}, speedBlock);
 
 }
 
-
-
-moveBlocks();
+gameFlow();
