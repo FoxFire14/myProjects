@@ -4,18 +4,22 @@ const numberOfLines = 4;
 const fieldHeight = canvas.height;
 const fieldWidth = canvas.width;
 let fieldDivision = fieldWidth / numberOfLines;
+const score = document.querySelector(".cc-score-value");
+const myCounter = document.querySelector(".seconds-counter");
 
 const blockHeight = 40;
-const blockWidth = fieldDivision;
+const blockWidth = fieldDivision - 3;
 let id = 1
-let speedBlock = 20;
+let speedBlock = 1;
+let seconds = 0;
 
 
 class Block {
-    constructor(positonX, color) {
-        this._x = positonX;
+    constructor(positonX, color, key) {
+        this._x = positonX + 2;
         this._y = -blockHeight;
         this._color = color;
+        this._key = key;
     }
 
     get x() {
@@ -30,37 +34,23 @@ class Block {
         return this._color;
     }
 
+    get key() {
+        return this._key;
+    }
+
     set y(value) {
         this._y = value;
     }
 }
 
 
-class BlockA extends Block {
-    constructor () {
-        super(0, "blue");
-    }
-}
+const blocks = [
+    () => new Block(0, "blue", "a"),
+    () => new Block(fieldDivision, "red", "s"),
+    () => new Block(fieldDivision * 2, "green", "d"),
+    () => new Block(fieldDivision * 3, "orange", "f")
+];
 
-class BlockB extends Block {
-    constructor () {
-        super(fieldDivision, "red");
-    }
-}
-
-class BlockC extends Block {
-    constructor () {
-        super(fieldDivision * 2, "green");
-    }
-}
-
-class BlockD extends Block {
-    constructor () {
-        super(fieldDivision * 3, "orange");
-    }
-}
-
-const myBlockA = new BlockA(); 
 
 let blocksOnField = [];
 
@@ -75,33 +65,12 @@ function getRandomInt(min, max) {
 }
 
 
-function generateBlock() {
-    let randomNumber = getRandomInt(1, 4);
-    let block;
-
-    switch (randomNumber) {
-
-        case 1: 
-            block = new BlockA();
-            break;
-        case 2: 
-            block = new BlockB();
-            break;
-        case 3: 
-            block = new BlockC();
-            break;
-        case 4: 
-            block = new BlockD();
-            break;
-    }
-
-    return block;
-}
 
 
 function addBlockToField() {
 
-        blocksOnField.push(generateBlock());
+    const blockCreator = blocks[Math.floor(Math.random() * blocks.length)];
+    blocksOnField.push(blockCreator());
 }
 
 
@@ -109,38 +78,28 @@ function gameArea() {
     return fieldHeight - (fieldHeight * 0.14);
 }
 
+
 function drawLines() {
     
-    let currentLine = fieldDivision;
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, 1, fieldHeight);
+    ctx.fillRect(fieldWidth - 1, 0, 1, fieldHeight);
 
-    ctx.fillStyle = "white"
-    ctx.fillRect(0,gameArea(),fieldWidth, blockHeight);
+    let i, x  = 0;
 
-    for (let i = 0; i < numberOfLines; i++) {
+    for (i = 1; i <= numberOfLines; i++) {
 
-        ctx.moveTo(currentLine, 0);  // Top-left corner of the canvas
-        // Set the end point
-        ctx.lineTo(currentLine, fieldHeight);  // Bottom-right corner of the canvas
-        // Draw the line
-        ctx.strokeStyle = 'white';
-        ctx.stroke();
+        x = fieldDivision * i;
 
-        currentLine += fieldDivision;
+        ctx.fillRect(x, 0, 1, fieldHeight);
 
     }
-    
 }
 
-function limitCheck (block, index) {
-    let value = null;
-
-    if (block.y >= fieldHeight) {
-        value = blocksOnField.splice(index, 1);
-    }
-
-    return value === null;
+function incrementSeconds() {
+    seconds += 1;
+    myCounter.innerText = seconds;
 }
-
 
 function drawBlocks(block) {
 
@@ -150,33 +109,53 @@ function drawBlocks(block) {
 }
 
 
+function checkPointZone(block) {
+    
+    return block.y > gameArea() - 50 && event.key === block.key;
+}
+
 function moveBlocks() {
 
-    let block;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawLines();
 
-    for (let i = 0; i < blocksOnField.length; i++) {
-        block = blocksOnField[i];
-        
-        if (limitCheck(block, i)) {
-            
-            drawBlocks(block);
-            block.y += 1;
+    blocksOnField = blocksOnField.filter(block => {
 
+        block.y += speedBlock;
+
+        if (block.y < fieldHeight) {
+
+            ctx.fillStyle = block.color;
+            ctx.fillRect(block.x, block.y, blockWidth, blockHeight);
+            return true;
         }
-    } 
+
+        return false;
+    });
+
 }
 
 function gameFlow() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
-    drawLines(); // Draw lines or other static parts of your game field
-    moveBlocks(); // Update the position of the blocks
-
-    // Set up the next game loop iteration
-    loopID = setTimeout(gameFlow, speedBlock);
+    requestAnimationFrame(gameFlow);
+    moveBlocks();
 }
 
 // Start the game loop the first time
 gameFlow();
 
 
-const addBlockInterval = setInterval(addBlockToField, getRandomInt(1500, 5000));
+const addBlockInterval = setInterval(addBlockToField, getRandomInt(400, 2000));
+const incrementSecondsInterval = setInterval(incrementSeconds, 1000)
+
+
+
+addEventListener("keydown", function(event) {
+
+    if (event.key === 'a') {
+        let arrayTest = blocksOnField.filter(checkPointZone);
+        console.log(arrayTest.length)
+        for (const i of arrayTest) {
+            console.log(i)
+        }
+    }
+});
