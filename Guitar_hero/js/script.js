@@ -62,7 +62,7 @@ class BlockD extends Block {
 
 const myBlockA = new BlockA(); 
 
-let blocksOnField = [myBlockA, new BlockB(), new BlockC(), new BlockD()];
+let blocksOnField = [];
 
 
 function getRandomInt(min, max) {
@@ -74,17 +74,53 @@ function getRandomInt(min, max) {
 
 }
 
+
+function generateBlock() {
+    let randomNumber = getRandomInt(1, 4);
+    let block;
+
+    switch (randomNumber) {
+
+        case 1: 
+            block = new BlockA();
+            break;
+        case 2: 
+            block = new BlockB();
+            break;
+        case 3: 
+            block = new BlockC();
+            break;
+        case 4: 
+            block = new BlockD();
+            break;
+    }
+
+    return block;
+}
+
+
+function addBlockToField() {
+
+        blocksOnField.push(generateBlock());
+}
+
+
+function gameArea() {
+    return fieldHeight - (fieldHeight * 0.14);
+}
+
 function drawLines() {
     
     let currentLine = fieldDivision;
 
+    ctx.fillStyle = "white"
+    ctx.fillRect(0,gameArea(),fieldWidth, blockHeight);
+
     for (let i = 0; i < numberOfLines; i++) {
 
         ctx.moveTo(currentLine, 0);  // Top-left corner of the canvas
-
         // Set the end point
         ctx.lineTo(currentLine, fieldHeight);  // Bottom-right corner of the canvas
-
         // Draw the line
         ctx.strokeStyle = 'white';
         ctx.stroke();
@@ -131,15 +167,16 @@ function moveBlocks() {
 }
 
 function gameFlow() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+    drawLines(); // Draw lines or other static parts of your game field
+    moveBlocks(); // Update the position of the blocks
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawLines();
-    moveBlocks();
-    
-    //loopID = setTimeout(() => {
-    //    gameFlow();
-    //}, speedBlock);
-
+    // Set up the next game loop iteration
+    loopID = setTimeout(gameFlow, speedBlock);
 }
 
+// Start the game loop the first time
 gameFlow();
+
+
+const addBlockInterval = setInterval(addBlockToField, getRandomInt(1500, 5000));
